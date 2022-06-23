@@ -17,16 +17,18 @@ yum install cmake
 
 rm -rf build
 
-# linux/unix
+## linux/unix
 cmake . -B build
 make -C build
 
-# win
-## win64
+## win
+### win64
 cmake -A x64 -B build . 
 cmake --build ./build --config Release
 
-## win32
+### win32
 cmake -A Win32 -B build . 
 cmake --build ./build --config Release
+
+# run:  build/bin_asm_cpp
 ```
