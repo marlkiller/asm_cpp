@@ -89,6 +89,8 @@ void asm_test() {
     // 31个通用寄存器(R0~R30)，每个寄存器可以存取一个64位大小的数，
     // 当使用 X0-X30时，是一个64位的数，
     // 当使用 W0-W30访问时，是一个32位的数，为寄存器的低32位。
+    // 使用`%w[name]` 操作W寄存器(正如这里的情况).
+    // 针对X寄存器可以使用 `%x[name]`，这是默认的情况
     std::cout << "this is arm cpu" << std::endl;
     
     int64_t result;
@@ -97,24 +99,24 @@ void asm_test() {
     
     long tmp;
     
-    __asm__ __volatile__ (
-                          "mov w0, #0x11111111\n"
-                          "mov x1, #0x9012\n" // long = 0x123456789012 (16) / 20015998341138 (10);
-                          "movk x1, #0x5678, lsl #16\n"
-                          "movk x1, #0x1234, lsl #32\n"
-                          "mov %[res],x1\n"
-                          :[res]"=r"(tmp)
-                          :
-                          :"cc","memory"
-                          );
-    
-    __asm__ __volatile__ (
-                          "ADD x0, %[input_i], %[input_j]"
-                          :
-                          : [input_i] "r"(a), [input_j] "r"(b)
-                          :"cc","memory"
-                          );
-    
+//    __asm__ __volatile__ (
+//                          "mov w0, #0x11111111\n"
+//                          "mov x1, #0x9012\n" // long = 0x123456789012 (16) / 20015998341138 (10);
+//                          "movk x1, #0x5678, lsl #16\n"
+//                          "movk x1, #0x1234, lsl #32\n"
+//                          "mov %[res],x1\n"
+//                          :[res]"=r"(tmp)
+//                          :
+//                          :"cc","memory"
+//                          );
+//
+//    __asm__ __volatile__ (
+//                          "ADD x0, %[input_i], %[input_j]"
+//                          :
+//                          : [input_i] "r"(a), [input_j] "r"(b)
+//                          :"cc","memory"
+//                          );
+//
     __asm__ __volatile__ (
                           "add %[result_ra], %[value_a], %[value_b]\n"
                           "mov %[result_rc], #0x20\n"
@@ -123,12 +125,11 @@ void asm_test() {
                           :"cc","memory"
                           );
     
-    __asm__ __volatile__ (
-                          "blr %[fun_dev_addr]\n\t"
+    __asm__ __volatile__ ("blr %[fun_dev_addr]\n\t"
                           :
                           :[fun_dev_addr]"r"(fun_dev)
                           :"cc","memory"
-                          );
+                         );
     
 #elif defined __x86_64__
     // https://blog.csdn.net/u014555106/article/details/124577187
