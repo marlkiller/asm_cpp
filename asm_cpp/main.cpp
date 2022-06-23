@@ -9,9 +9,14 @@
 #include "httplib.h"
 
 using namespace std;
-EXTERN_C ULONG64 asm_win64_add(ULONG64 u1, ULONG64 u2,DWORD_PTR u3);
-EXTERN_C ULONG64 asm_win64_call(DWORD_PTR u1);
 
+#if defined _WIN32
+    #if defined(_M_X64) 
+    EXTERN_C ULONG64 asm_win64_add(ULONG64 u1, ULONG64 u2,DWORD_PTR u3);
+    EXTERN_C ULONG64 asm_win64_call(DWORD_PTR u1);   
+    #endif
+#endif
+    
 void fun_dev() {
     printf("this is fun_dev\r\n");
 }
