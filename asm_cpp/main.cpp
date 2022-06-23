@@ -82,18 +82,15 @@ void asm_test() {
 #if defined  __aarch64__
     // ARMv8
     // https://cloud.tencent.com/developer/article/1635842
+    // 32 位为 mov r1-rn, 64为 mov x1-xn
+    // blr: (branch)跳转到某地址(无返回)
+    // bl: 跳转到某地址(有返回)
+    // ret: 子程序(函数调用)返回指令，返回地址已默认保存在寄存器 lr (x30) 中
     // 31个通用寄存器(R0~R30)，每个寄存器可以存取一个64位大小的数，
     // 当使用 X0-X30时，是一个64位的数，
     // 当使用 W0-W30访问时，是一个32位的数，为寄存器的低32位。
     std::cout << "this is arm cpu" << std::endl;
     
-    // fun_dev();
-    __asm__ __volatile__ (
-                          "blr %[fun_dev_addr]\n\t"
-                          :
-                          :[fun_dev_addr]"r"(fun_dev)
-                          :"cc","memory"
-                          );
     int64_t result;
     // asm("movz %w[res], #0x100" : [res] "=r"(result));
     // asm("movz %w[res], %[value]" : [res] "=r"(result) : [value] "i"(10));
@@ -126,6 +123,13 @@ void asm_test() {
                           :"cc","memory"
                           );
     
+    __asm__ __volatile__ (
+                          "blr %[fun_dev_addr]\n\t"
+                          :
+                          :[fun_dev_addr]"r"(fun_dev)
+                          :"cc","memory"
+                          );
+    
 #elif defined __x86_64__
     // https://blog.csdn.net/u014555106/article/details/124577187
     // gcc AT&T语法中操作数的方向与intel相反。在 Intel 语法中，第一个操作数是目标，第二个操作数是源
@@ -136,13 +140,6 @@ void asm_test() {
     
     std::cout << "this is x86 cpu" << std::endl;
     
-    //fun_dev();
-    __asm__ __volatile__ (
-                          "callq *%[fun_dev_addr]\n\t" // 在内联汇编语句中使用寄存器 eax 时，寄存器名前应该加两个 ‘%’，即 %%eax
-                          :
-                          :[fun_dev_addr]"a"(fun_dev) // mov fun_dev_addr,rax; call rax; // :"%eax"
-                          :"cc","memory"
-                          );
     
     __asm__ __volatile__ (
                           "mov $0x1111111,%%rax\n"
@@ -151,17 +148,23 @@ void asm_test() {
                           "mov $0x1111111,%%rax\n"
                           :::"cc","memory"
                           );
-
+    
     __asm__ __volatile__(
                          "add %[value_a],%[value_b]\n"
                          "movq %[value_b], %[result_ra]\n"
                          "movq $0x20, %[result_rc]\n\n"
-
+                         
                          :[result_ra]"=a"(result_ra),[result_rc]"=c"(result_rc) // result_ra 赋值给 rax,result_rc 赋值给 rcx
                          :[value_a] "a"(a),[value_b] "b"(b) // value_a 赋值给 rax , value_b 赋值给 rbx
                          :"cc","memory"
                          );
     
+    __asm__ __volatile__ (
+                          "callq *%[fun_dev_addr]\n\t" // 在内联汇编语句中使用寄存器 eax 时，寄存器名前应该加两个 ‘%’，即 %%eax
+                          :
+                          :[fun_dev_addr]"a"(fun_dev) // mov fun_dev_addr,rax; call rax; // :"%eax"
+                          :"cc","memory"
+                          );
     
     //    uint32_t rax,rbx,rcx, rdx; // uint64_t
     //      asm __volatile__ (
@@ -170,7 +173,11 @@ void asm_test() {
     //        :
     //      );
 #endif
-    printf("asm result %lu - %lu \r\n", result_ra, result_rc);
+    printf("asm result (add %lu,%lu ) = %lu , (mov 0x20) = %lu \r\n",
+           a,b,
+           result_ra,
+           result_rc
+           );
     
     
 }
