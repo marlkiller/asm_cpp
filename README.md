@@ -19,6 +19,11 @@ cmake . -B build
 make -C build
 
 # win
-cmake . -B build
+## win64
+cmake -A x64 -B build . 
+cmake --build ./build --config Release
+
+## win32
+cmake -A Win32 -B build . 
 cmake --build ./build --config Release
 ```
