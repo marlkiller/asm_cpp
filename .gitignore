@@ -4,3 +4,5 @@ cmake_install.cmake
 bin_asm_cpp
 CMakeCache.txt
 Makefile
+.idea/
+CMakeFiles/
