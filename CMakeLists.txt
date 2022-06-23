@@ -21,12 +21,12 @@ endif(CMAKE_CL_64)
 
 
 if(CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64")
-    set(CURRENT_BIT "aarch64")
+    set(CURRENT_ARCH "aarch64")
 
 elseif(CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
-    set(CURRENT_BIT "x86_64")
+    set(CURRENT_ARCH "x86_64")
 elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "AMD64")
-    set(CURRENT_BIT "AMD64")
+    set(CURRENT_ARCH "AMD64")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -36,7 +36,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     endif()
 endif()
 
-message(STATUS "Current OS is ${CURRENT_OS}/${CURRENT_ARCH} ${CURRENT_BIT}")
+message(STATUS "Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
 
 include_directories(asm_cpp)
 
