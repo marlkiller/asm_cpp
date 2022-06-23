@@ -14,6 +14,6 @@ yum install cmake
 ## build
 
 ```shell
-cmake.  
-make
+cmake . -B build
+make -C build
 ```
