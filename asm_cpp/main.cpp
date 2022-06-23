@@ -9,6 +9,8 @@
 #include "httplib.h"
 
 using namespace std;
+EXTERN_C ULONG64 asm_win64_add(ULONG64 u1, ULONG64 u2,DWORD_PTR u3);
+EXTERN_C ULONG64 asm_win64_call(DWORD_PTR u1);
 
 void fun_dev() {
     printf("this is fun_dev\r\n");
@@ -173,8 +175,36 @@ void asm_test() {
     //        : "=a" (rax), "=b" (rbx),"=c" (rcx),"=d" (rdx)
     //        :
     //      );
+#elif defined _WIN32
+    #if defined(_M_X64)	
+    std::cout << "this is _WIN64 " << std::endl;
+
+    
+    result_ra = asm_win64_add(a,b, (DWORD_PTR)&result_rc);
+    asm_win64_call((DWORD_PTR)&fun_dev);
+
+
+    #else
+
+        std::cout << "this is _WIN32 " << std::endl;
+        __asm {
+
+            mov eax, a;
+            mov ebx, b;
+            add eax, ebx;
+            mov result_ra, eax;
+            mov result_rc, 0x20;
+        }
+
+        __asm {
+
+            call fun_dev;
+        }
+    #endif
+    
+
 #endif
-    printf("asm result (add %lu,%lu ) = %lu , (mov 0x20) = %lu \r\n",
+    printf("asm result (%lu + %lu ) => %lu ?  , (0x20) => %lu ?  \r\n",
            a,b,
            result_ra,
            result_rc
