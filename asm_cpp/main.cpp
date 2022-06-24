@@ -138,7 +138,8 @@ void asm_test() {
                           :"cc","memory"
                          );
     
-#elif defined __x86_64__
+#elif defined __x86_64__ 
+    // __x86_64__/__i386__ (x64/x86)
     // https://blog.csdn.net/u014555106/article/details/124577187
     // gcc AT&T语法中操作数的方向与intel相反。在 Intel 语法中，第一个操作数是目标，第二个操作数是源
     // 在 Intel 语法中，基址寄存器包含在 '[' 和 ']' 中，而在 AT&T 中它们更改为 '(' 和 ')'
@@ -181,9 +182,9 @@ void asm_test() {
     //        :
     //      );
 #elif defined _WIN32
+
     #if defined(_M_X64)	
     std::cout << "this is _WIN64 " << std::endl;
-
     
     result_ra = asm_win64_add(a,b, (DWORD_PTR)&result_rc);
     asm_win64_call((DWORD_PTR)&fun_dev);
