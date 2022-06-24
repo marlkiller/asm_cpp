@@ -8,7 +8,7 @@ c++ inline asm
 > cmake :  
 > https://cmake.org/download/  
 > https://github.com/Kitware/CMake/releases/tag/v3.24.0-rc1  
-> gcc/g++:  
+> gcc/g++:  (yum install -y gcc-c++)
 > https://gcc.gnu.org/
 
 ## Settings
