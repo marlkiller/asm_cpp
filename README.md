@@ -12,16 +12,13 @@ yum install -y cmake
 yum install -y gcc-c++
 ```
 
-### See Also:
-- https://gcc.gnu.org/
-- https://cmake.org/download/
-- https://github.com/Kitware/CMake/releases/tag/v3.24.0-rc1
-
 ## Settings
 ### Windows
-> Visual Studio (Configuring the cmake environment)
+> Visual Studio (Configuring the cmake environment)  
+
 ### MacOS
-> Xcode (Build Settings > Optimization Level > Release > None[-O0])
+> Xcode (Build Settings > Optimization Level > Release > None[-O0])  
+
 
 ## build
 
@@ -45,7 +42,7 @@ cmake --build ./build --config Release
 ```
 ### run
 ```shell
-# run:  build/bin_asm_cpp
+./build/bin_asm_cpp
 ```
 
 ## Supported Platform
@@ -56,3 +53,9 @@ cmake --build ./build --config Release
 | MacOS(Arm)          | ❌ | ✅ |
 | Linux(__x86_64__)   | ❌ | ✅ |
 | Windowx(__x86_64__) | ✅ | ✅ |
+
+
+### See Also:
+- https://gcc.gnu.org/
+- https://cmake.org/download/
+- https://github.com/Kitware/CMake/releases/tag/v3.24.0-rc1
