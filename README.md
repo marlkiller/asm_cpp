@@ -19,7 +19,7 @@ yum install -y gcc-c++
 
 ## Settings
 ### Windows
-> Visual Studio
+> Visual Studio (Configuring the cmake environment)
 ### MacOS
 > Xcode (Build Settings > Optimization Level > Release > None[-O0])
 
