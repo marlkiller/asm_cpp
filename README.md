@@ -9,6 +9,8 @@ c++ inline asm
 > https://cmake.org/download/  
 > https://github.com/Kitware/CMake/releases/tag/v3.24.0-rc1
 
+> Visual Studio (Only Windows)
+
 yum install cmake
 
 ## build
