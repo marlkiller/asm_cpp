@@ -235,6 +235,7 @@ make -C build
 ### Windows
 
 ```bat
+rmdir /s build
 ### win64
 cmake -A x64 -B build .
 cmake --build ./build --config Release
