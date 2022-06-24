@@ -3,13 +3,19 @@
 c++ inline asm 
 
 
-## env
+## ENV
 
-> cmake :  
-> https://cmake.org/download/  
-> https://github.com/Kitware/CMake/releases/tag/v3.24.0-rc1  
-> gcc/g++:  (yum install -y gcc-c++)
-> https://gcc.gnu.org/
+```shell
+# cmake
+yum install -y cmake
+# gcc/g++
+yum install -y gcc-c++
+```
+
+### See Also:
+- https://gcc.gnu.org/
+- https://cmake.org/download/
+- https://github.com/Kitware/CMake/releases/tag/v3.24.0-rc1
 
 ## Settings
 ### Windows
@@ -23,7 +29,7 @@ yum install cmake
 
 ### linux/unix/macos
 ```shell
-rm -rf build
+rm -rf build/*
 cmake . -B build
 make -C build
 ```
