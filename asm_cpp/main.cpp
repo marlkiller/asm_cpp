@@ -125,14 +125,15 @@ void asm_test() {
 //                          );
 //
     __asm__ __volatile__ (
-                          "add %[result_ra], %[value_a], %[value_b]\n"
-                          "mov %[result_rc], #0x20\n"
+                          "add %[result_ra], %[value_a], %[value_b]\n\t"
+                          "mov %[result_rc], #0x20\n\t"
                           :[result_ra]"=r"(result_ra),[result_rc]"=r"(result_rc)
                           :[value_a]"r"(a), [value_b]"r"(b)
                           :"cc","memory"
                           );
     
-    __asm__ __volatile__ ("blr %[fun_dev_addr]\n\t"
+    __asm__ __volatile__ (
+                          "blr %[fun_dev_addr]\n\t"
                           :
                           :[fun_dev_addr]"r"(fun_dev)
                           :"cc","memory"
@@ -151,17 +152,17 @@ void asm_test() {
     
     
     __asm__ __volatile__ (
-                          "mov $0x1111111,%%rax\n"
-                          "mov $0x1111111,%%rax\n"
-                          "mov $0x1111111,%%rax\n"
-                          "mov $0x1111111,%%rax\n"
+                          "mov $0x1111111,%%rax\n\t"
+                          "mov $0x1111111,%%rax\n\t"
+                          "mov $0x1111111,%%rax\n\t"
+                          "mov $0x1111111,%%rax\n\t"
                           :::"cc","memory"
                           );
     
     __asm__ __volatile__(
-                         "add %[value_a],%[value_b]\n"
-                         "movq %[value_b], %[result_ra]\n"
-                         "movq $0x20, %[result_rc]\n\n"
+                         "add %[value_a],%[value_b]\n\t"
+                         "movq %[value_b], %[result_ra]\n\t"
+                         "movq $0x20, %[result_rc]\n\t"
                          
                          :[result_ra]"=a"(result_ra),[result_rc]"=c"(result_rc) // result_ra 赋值给 rax,result_rc 赋值给 rcx
                          :[value_a] "a"(a),[value_b] "b"(b) // value_a 赋值给 rax , value_b 赋值给 rbx
