@@ -5,7 +5,7 @@ c++ inline asm
 
 ## env
 
-> cmake :  
+> cmake (yum install cmake):  
 > https://cmake.org/download/  
 > https://github.com/Kitware/CMake/releases/tag/v3.24.0-rc1  
 > gcc/g++:  (yum install -y gcc-c++)
@@ -16,8 +16,6 @@ c++ inline asm
 > Visual Studio
 ### MacOS
 > Xcode (Build Settings > Optimization Level > Release > None[-O0])
-
-yum install cmake
 
 ## build
 
