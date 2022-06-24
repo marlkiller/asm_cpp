@@ -1,6 +1,6 @@
 # cpp_asm
 
-c++ inline asm 
+c++ inline asm
 
 
 ## ENV
@@ -22,8 +22,6 @@ yum install -y gcc-c++
 > Visual Studio
 ### MacOS
 > Xcode (Build Settings > Optimization Level > Release > None[-O0])
-
-yum install cmake
 
 ## build
 
