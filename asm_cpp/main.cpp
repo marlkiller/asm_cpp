@@ -13,9 +13,8 @@ using namespace std;
 
 #if defined _WIN32
     #if defined(_M_X64) 
-//    extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2,uintptr_t u3);
-    EXTERN_C ULONG64 asm_win64_add(ULONG64 u1, ULONG64 u2,DWORD_PTR u3);
-    EXTERN_C ULONG64 asm_win64_call(DWORD_PTR u1);   
+    extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2,uintptr_t u3);
+    extern "C" uintptr_t asm_win64_call(uintptr_t u1); 
     #endif
 #endif
     
