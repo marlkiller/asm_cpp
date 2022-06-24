@@ -32,11 +32,11 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     if(CMAKE_CL_64)
         enable_language(ASM_MASM)
-        message("enable_language(ASM_MASM)")
+        message(">> enable_language(ASM_MASM)")
     endif()
 endif()
 
-message(STATUS "Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
+message(STATUS ">> Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
 
 include_directories(asm_cpp)
 
