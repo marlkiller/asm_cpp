@@ -303,6 +303,7 @@ add_executable(bin_asm_cpp
 | MacOS(__x86_64__)   | ❌ | ✅ |
 | MacOS(Arm)          | ❌ | ✅ |
 | Linux(__x86_64__)   | ❌ | ✅ |
+| Linux(Arm)          | ❌ | ✅ |
 | Windowx(__x86_64__) | ✅ | ✅ |
 
 
