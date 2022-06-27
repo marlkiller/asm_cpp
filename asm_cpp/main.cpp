@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "httplib.h"
+#include "include_demo.h"
 
 using namespace std;
 
@@ -104,7 +105,6 @@ void asm_test() {
     int64_t result;
     // asm("movz %w[res], #0x100" : [res] "=r"(result));
     // asm("movz %w[res], %[value]" : [res] "=r"(result) : [value] "i"(10));
-    
     long tmp;
     
 //    __asm__ __volatile__ (
@@ -223,7 +223,9 @@ void asm_test() {
 
 
 int main(int argc, const char *argv[]) {
-    
+
+    include_test();
+//    http_test();
     asm_test();
     return 0;
 }

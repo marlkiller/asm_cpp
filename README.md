@@ -25,6 +25,8 @@ yum install -y gcc-c++
     Mac 用 Xcode 开发的话, Release 模式要设置下Optimization Level ,否则手写 asm, 编译器开启自动优化会有意想不到的异常发生. (大神忽略)
     Debug 模式下 是默认关闭 自动优化的, 所以Debug模式可以忽略
     Xcode (Build Settings > Optimization Level > Release > None[-O0])
+    Xcode 需要手动配置头文件路径
+    Xcode (Build Settings > Search Paths > Header Search Paths : include)
     建议Mac 用 Clion 开发...
 
 ## Code

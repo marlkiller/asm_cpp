@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		38876D6928644FFE00472110 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38876D6828644FFE00472110 /* main.cpp */; };
+		38B0242F2869721A00BC10AC /* demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38B0242E2869721A00BC10AC /* demo.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,7 +26,8 @@
 /* Begin PBXFileReference section */
 		38876D6528644FFE00472110 /* asm_cpp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = asm_cpp; sourceTree = BUILT_PRODUCTS_DIR; };
 		38876D6828644FFE00472110 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		38876D6F2864502300472110 /* httplib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = httplib.h; sourceTree = "<group>"; };
+		38B0242D2869706E00BC10AC /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
+		38B0242E2869721A00BC10AC /* demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = demo.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +44,7 @@
 		38876D5C28644FFE00472110 = {
 			isa = PBXGroup;
 			children = (
+				38B0242D2869706E00BC10AC /* include */,
 				38876D6728644FFE00472110 /* asm_cpp */,
 				38876D6628644FFE00472110 /* Products */,
 			);
@@ -58,8 +61,8 @@
 		38876D6728644FFE00472110 /* asm_cpp */ = {
 			isa = PBXGroup;
 			children = (
+				38B0242E2869721A00BC10AC /* demo.cpp */,
 				38876D6828644FFE00472110 /* main.cpp */,
-				38876D6F2864502300472110 /* httplib.h */,
 			);
 			path = asm_cpp;
 			sourceTree = "<group>";
@@ -121,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38B0242F2869721A00BC10AC /* demo.cpp in Sources */,
 				38876D6928644FFE00472110 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,6 +182,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = include;
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -231,6 +236,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = include;
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
