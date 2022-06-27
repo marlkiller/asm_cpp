@@ -6,10 +6,18 @@
 //
 
 #include <iostream>
-#include <dlfcn.h>
 #include "main.h"
 #include "httplib.h"
 #include "include_demo.h"
+
+#if defined _WIN32
+    #if defined(_M_X64) 
+    extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2, uintptr_t u3);
+    extern "C" uintptr_t asm_win64_call(uintptr_t u1);
+    #endif
+#else
+    #include <dlfcn.h>
+#endif
 
 typedef int (*TP_CALL2)(int u1, int u2);
 
@@ -18,12 +26,6 @@ typedef int (*TP_CALL1)(int u1);
 using namespace std;
 
 
-#if defined _WIN32
-#if defined(_M_X64) 
-extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2,uintptr_t u3);
-extern "C" uintptr_t asm_win64_call(uintptr_t u1); 
-#endif
-#endif
 
 int lib_dev(int a) {
     return (a + a);

@@ -48,15 +48,7 @@ elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "AMD64")
     set(CURRENT_ARCH "AMD64")
 endif ()
 
-if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-    if (CMAKE_CL_64)
-        enable_language(ASM_MASM)
-        message(">> enable_language(ASM_MASM)")
-        list(APPEND TEST_MATH
-                "asm_cpp/win64.asm"
-                )
-    endif ()
-endif ()
+
 
 message(">>>>>>>>>>>>>> Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
 message(">>>>>>>>>>>>>> TEST_MATH : ${TEST_MATH}")
@@ -66,6 +58,14 @@ set(CMAKE_STATIC_LIBRARY_PREFIX "static_lib_")
 
 # 自动去搜索该目录下的相对于的 dylib/so/dll 文件
 if (WINDOWS)
+    if (CMAKE_CL_64)
+       enable_language(ASM_MASM)
+       message(">> enable_language(ASM_MASM)")
+       list(APPEND TEST_MATH
+                "asm_cpp/win64.asm"
+                )
+    endif ()
+
     SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib/windows)
 #    link_directories("${PROJECT_SOURCE_DIR}/lib/win")
 elseif (LINUX)
