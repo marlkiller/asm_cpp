@@ -59,22 +59,20 @@ message("${TEST_MATH}")
 
 if(WINDOWS)
     link_directories("${PROJECT_SOURCE_DIR}/lib/win")
-    ADD_DEFINITIONS(-DDLL_EXPORTS)
 elseif(LINUX)
     link_directories("${PROJECT_SOURCE_DIR}/lib/linux")
 elseif(MACOS)
     set(LINK_DIR lib/macos)
     file(GLOB LIBS "${LINK_DIR}/libopencv_*.so")
-
 endif()
 
 # 生成可执行文件
-#ADD_EXECUTABLE(bin_asm_cpp ${TEST_MATH})
+ADD_EXECUTABLE(bin_asm_cpp ${TEST_MATH})
 # 把目标文件与库文件进行链接
 #target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 # 生成静态库
-ADD_LIBRARY(_asm_cpp STATIC ${TEST_MATH}) 
+#ADD_LIBRARY(_asm_cpp STATIC ${TEST_MATH}) 
 # 生成动态库或共享库
 #ADD_LIBRARY(_asm_cpp SHARED ${TEST_MATH}) 
 
