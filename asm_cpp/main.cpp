@@ -6,6 +6,7 @@
 //
 
 #include <iostream>
+#include "main.h"
 #include "httplib.h"
 #include "include_demo.h"
 
@@ -18,7 +19,10 @@ using namespace std;
     extern "C" uintptr_t asm_win64_call(uintptr_t u1); 
     #endif
 #endif
-    
+
+int liv_dev(int a, int b) {
+    return (a + b);
+}
 void fun_dev() {
     printf("this is fun_dev\r\n");
 }

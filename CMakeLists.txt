@@ -17,10 +17,13 @@ SET(TEST_MATH ${DIR_SRCS})
 
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(Linux 1)
     set(CURRENT_OS "Linux")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(Windows 1)
     set(CURRENT_OS "Windows")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Apple")
+    set(Apple 1)
     set(CURRENT_OS "Apple")
 endif ()
 
@@ -45,23 +48,36 @@ if (CMAKE_SYSTEM_NAME MATCHES "Windows")
     if (CMAKE_CL_64)
         enable_language(ASM_MASM)
         message(">> enable_language(ASM_MASM)")
-
         list(APPEND TEST_MATH
             "asm_cpp/win64.asm"
             )
-        
-                
     endif ()
 endif ()
 
 message(STATUS ">> Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
 message("${TEST_MATH}")
-# 添加要编译的可执行文件
-ADD_EXECUTABLE(bin_asm_cpp ${TEST_MATH})
 
-#add_executable(demo demo.cpp) # 生成可执行文件
-#add_library(common STATIC util.cpp) # 生成静态库
-#add_library(common SHARED util.cpp) # 生成动态库或共享库
+if(WINDOWS)
+    link_directories("${PROJECT_SOURCE_DIR}/lib/win")
+    ADD_DEFINITIONS(-DDLL_EXPORTS)
+elseif(LINUX)
+    link_directories("${PROJECT_SOURCE_DIR}/lib/linux")
+elseif(MACOS)
+    set(LINK_DIR lib/macos)
+    file(GLOB LIBS "${LINK_DIR}/libopencv_*.so")
+
+endif()
+
+# 生成可执行文件
+#ADD_EXECUTABLE(bin_asm_cpp ${TEST_MATH})
+# 把目标文件与库文件进行链接
+#target_link_libraries(${PROJECT_NAME} ${LIBS})
+
+# 生成静态库
+ADD_LIBRARY(_asm_cpp STATIC ${TEST_MATH}) 
+# 生成动态库或共享库
+#ADD_LIBRARY(_asm_cpp SHARED ${TEST_MATH}) 
+
 
 ## add_library 默认生成是静态库，通过以上命令生成文件名字，
 #
@@ -69,13 +85,13 @@ ADD_EXECUTABLE(bin_asm_cpp ${TEST_MATH})
 #demo
 #libcommon.a
 #libcommon.so
-#
+
+#在 Mac 下分别是：
+#demo
+#libcommon.a
+#libcommon.dylib
+
 #在 Windows 下分别是：
 #demo.exe
 #common.lib
 #common.dll
-
-#add_executable(bin_asm_cpp
-#        asm_cpp/win64.asm
-#        asm_cpp/httplib.h
-#        asm_cpp/main.cpp)
