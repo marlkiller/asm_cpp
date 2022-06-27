@@ -1,9 +1,9 @@
-# 限制 CMake 版本
+# 指定 cmake 最小版本
 cmake_minimum_required(VERSION 3.22)
 # project 会引入两个变量：HELLO_BINARY_DIR, HELLO_SOURCE_DIR , 同时也会定义两个等价的变量：PROJECT_BINARY_DIR, PROJECT_SOURCE_DIR
 project(asm_cpp)
 
-# set 命令用来设置变量
+# #设置 c++ 版本
 set(CMAKE_CXX_STANDARD 14)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -40,8 +40,6 @@ endif ()
 
 message(STATUS ">> Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
 
-include_directories(asm_cpp)
-
 # 头文件目录
 INCLUDE_DIRECTORIES(include)
 # 源文件目录
@@ -53,8 +51,22 @@ SET(TEST_MATH ${DIR_SRCS})
 # 添加要编译的可执行文件
 ADD_EXECUTABLE(bin_asm_cpp ${TEST_MATH})
 
-# add_library 则告诉生成一个库文件。
-# add_executable 告诉工程生成一个可执行文件。
+#add_executable(demo demo.cpp) # 生成可执行文件
+#add_library(common STATIC util.cpp) # 生成静态库
+#add_library(common SHARED util.cpp) # 生成动态库或共享库
+
+## add_library 默认生成是静态库，通过以上命令生成文件名字，
+#
+#在 Linux 下分别是：
+#demo
+#libcommon.a
+#libcommon.so
+#
+#在 Windows 下分别是：
+#demo.exe
+#common.lib
+#common.dll
+
 #add_executable(bin_asm_cpp
 #        asm_cpp/win64.asm
 #        asm_cpp/httplib.h
