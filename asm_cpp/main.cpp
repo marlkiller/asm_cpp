@@ -6,23 +6,28 @@
 //
 
 #include <iostream>
+#include <dlfcn.h>
 #include "main.h"
 #include "httplib.h"
 #include "include_demo.h"
+
+typedef int (*TP_CALL2)(int u1, int u2);
+typedef int (*TP_CALL1)(int u1);
 
 using namespace std;
 
 
 #if defined _WIN32
-    #if defined(_M_X64) 
-    extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2,uintptr_t u3);
-    extern "C" uintptr_t asm_win64_call(uintptr_t u1); 
-    #endif
+#if defined(_M_X64) 
+extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2,uintptr_t u3);
+extern "C" uintptr_t asm_win64_call(uintptr_t u1); 
+#endif
 #endif
 
-int liv_dev(int a, int b) {
-    return (a + b);
+int lib_dev(int a) {
+    return (a + a);
 }
+
 void fun_dev() {
     printf("this is fun_dev\r\n");
 }
@@ -30,30 +35,30 @@ void fun_dev() {
 int arm_asm_add(int a, int b) {
     //    asm(
     //      asm-qualifiers
-    
+
     //     这里取值有三种 volatile , inline , goto:
     //     volatile的意思是易变的、不稳定的，用来告诉编译器不要随便优化这段代码，否则可能出问题。
     //     比如汇编指令“mov r0, r0”，它把r0的值复制到r0，并没有实际做什么事情，你的本意可能是用这条指令来延时。编译器看到这指令后，可能就把它去掉了。
     //     加上volatile的话，编译器就不会擅自优化。
-    
+
     //    code
     // : output operand list     /*输出操作数列表*/
     //    :"constraint"(variable)"constraint"用于定义variable的存放位置：
     //    r表示使用任何可用的寄存器
     //    m表示使用变量的内存地址+可读可写=只写&表示该输出操作数不能使用输入部分使用过的寄存器，只能用"+&"或"=&"的方式使用
-    
+
     // : input operand list      /*输入操作数列表*/
     //    :"constraint"(variable/immediate)"constraint"用于定义variable的存放位置：
     //    r(register operand，寄存器操作数，使用寄存器来保存这些操作数)
     //    m(memory operand，表示要传入有效的地址，只要CPU能支持该地址，就可以传入)
     //    i(immediate integer operand，表示可以传入一个立即数)
-    
+
     // : clobber list               /*被改变资源列表*/
     //      Clobbers: 一般是"cc", "memory"开头，然后接着填内联汇编中用到的通用寄存器和向量寄存器
     //      "cc"表示内联汇编代码修改了标志寄存器；
     //      "memory"表示汇编代码对输入和输出操作数执行内存读取或写入操作,表示汇编代码中,除了“InputOperands”和“OutputOperands”中指定的之外,还会读、写更多的内存
     //    );
-    
+
     //    int arm_asm_add(int m, int n)
     //         m  -- r0
     //         n  -- r1
@@ -83,15 +88,15 @@ void http_test() {
 // https://www.cs.uaf.edu/courses/cs301/2014-fall/notes/inline-assembly/
 // re read xx ; disas
 void asm_test() {
-    
+
     printf("fun_dev addr ->%p \r\n", &fun_dev);
     printf("printf addr ->%p \r\n", &printf);
-    
+
     uintptr_t a = 10;
     uintptr_t b = 20;
     uintptr_t result_ra = 0;
     uintptr_t result_rc = 0;
-    
+
 #if defined  __aarch64__
     // ARMv8
     // https://cloud.tencent.com/developer/article/1635842
@@ -105,12 +110,12 @@ void asm_test() {
     // 使用`%w[name]` 操作W寄存器(正如这里的情况).
     // 针对X寄存器可以使用 `%x[name]`，这是默认的情况
     std::cout << "this is arm cpu" << std::endl;
-    
+
     int64_t result;
     // asm("movz %w[res], #0x100" : [res] "=r"(result));
     // asm("movz %w[res], %[value]" : [res] "=r"(result) : [value] "i"(10));
     long tmp;
-    
+
 //    __asm__ __volatile__ (
 //                          "mov w0, #0x11111111\n"
 //                          "mov x1, #0x9012\n" // long = 0x123456789012 (16) / 20015998341138 (10);
@@ -130,20 +135,20 @@ void asm_test() {
 //                          );
 //
     __asm__ __volatile__ (
-                          "add %[result_ra], %[value_a], %[value_b]\n\t"
-                          "mov %[result_rc], #0x20\n\t"
-                          :[result_ra]"=r"(result_ra),[result_rc]"=r"(result_rc)
-                          :[value_a]"r"(a), [value_b]"r"(b)
-                          :"cc","memory"
-                          );
-    
+            "add %[result_ra], %[value_a], %[value_b]\n\t"
+            "mov %[result_rc], #0x20\n\t"
+            :[result_ra]"=r"(result_ra),[result_rc]"=r"(result_rc)
+    :[value_a]"r"(a), [value_b]"r"(b)
+    :"cc", "memory"
+    );
+
     __asm__ __volatile__ (
-                          "blr %[fun_dev_addr]\n\t"
-                          :
-                          :[fun_dev_addr]"r"(fun_dev)
-                          :"cc","memory"
-                         );
-    
+            "blr %[fun_dev_addr]\n\t"
+            :
+            :[fun_dev_addr]"r"(fun_dev)
+    :"cc", "memory"
+    );
+
 #elif defined __x86_64__ 
     // __x86_64__/__i386__ (x64/x86)
     // https://blog.csdn.net/u014555106/article/details/124577187
@@ -189,14 +194,14 @@ void asm_test() {
     //      );
 #elif defined _WIN32
 
-    #if defined(_M_X64)	
+#if defined(_M_X64)	
     std::cout << "this is _WIN64 " << std::endl;
     
     result_ra = asm_win64_add(a,b, (DWORD_PTR)&result_rc);
     asm_win64_call((DWORD_PTR)&fun_dev);
 
 
-    #else
+#else
 
         std::cout << "this is _WIN32 " << std::endl;
         __asm {
@@ -212,24 +217,36 @@ void asm_test() {
 
             call fun_dev;
         }
-    #endif
-    
+#endif
+
 
 #endif
     printf("asm result (%lu + %lu ) => %lu ?  , (0x20) => %lu ?  \r\n",
-           a,b,
+           a, b,
            result_ra,
            result_rc
-           );
-    
-    
+    );
+
+
 }
 
+void lib_test() {
+    //动态库路径
+    void *handle = dlopen("../lib/macos/shared_lib_asm_cpp.dylib", RTLD_NOW);
+    if (!handle)
+        return;
+    auto tp_call1 = (TP_CALL1) dlsym(handle, "lib_dev");
+    int result = tp_call1(1);
+    printf("result tp_call1(1) = {%d}\r\n", result);
+}
 
 int main(int argc, const char *argv[]) {
 
     include_test();
-//    http_test();
+    lib_test();
+    // http_test();
     asm_test();
     return 0;
 }
+
+

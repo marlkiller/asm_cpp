@@ -16,15 +16,21 @@ AUX_SOURCE_DIRECTORY(asm_cpp DIR_SRCS)
 SET(TEST_MATH ${DIR_SRCS})
 
 
-if (CMAKE_SYSTEM_NAME MATCHES "Linux")
-    set(Linux 1)
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    message(STATUS "Configuring on Linux.")
     set(CURRENT_OS "Linux")
-elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-    set(Windows 1)
-    set(CURRENT_OS "Windows")
-elseif (CMAKE_SYSTEM_NAME MATCHES "Apple")
-    set(Apple 1)
-    set(CURRENT_OS "Apple")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "AIX")
+    message(STATUS "Configuring on UNIX.")
+    set(CURRENT_OS "UNIX")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    message(STATUS "Configuring on macOS.")
+    set(CURRENT_OS "macOS")
+    set(MACOS 1)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    message(STATUS "Configuring on windows.")
+    set(CURRENT_OS "windows")
+else ()
+    message(STATUS "Configuring on ${CMAKE_SYSTEM_NAME}")
 endif ()
 
 
@@ -37,7 +43,6 @@ endif (CMAKE_CL_64)
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "aarch64")
     set(CURRENT_ARCH "aarch64")
-
 elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
     set(CURRENT_ARCH "x86_64")
 elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "AMD64")
@@ -49,32 +54,42 @@ if (CMAKE_SYSTEM_NAME MATCHES "Windows")
         enable_language(ASM_MASM)
         message(">> enable_language(ASM_MASM)")
         list(APPEND TEST_MATH
-            "asm_cpp/win64.asm"
-            )
+                "asm_cpp/win64.asm"
+                )
     endif ()
 endif ()
 
-message(STATUS ">> Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
-message("${TEST_MATH}")
+message(STATUS ">>>>>>>>>>>>>> Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
+message(">>>>>>>>>>>>>> TEST_MATH : ${TEST_MATH}")
 
-if(WINDOWS)
-    link_directories("${PROJECT_SOURCE_DIR}/lib/win")
-elseif(LINUX)
-    link_directories("${PROJECT_SOURCE_DIR}/lib/linux")
-elseif(MACOS)
-    set(LINK_DIR lib/macos)
-    file(GLOB LIBS "${LINK_DIR}/libopencv_*.so")
-endif()
+set(CMAKE_SHARED_LIBRARY_PREFIX "shared_lib_")
+set(CMAKE_STATIC_LIBRARY_PREFIX "static_lib_")
 
-# 生成可执行文件
-ADD_EXECUTABLE(bin_asm_cpp ${TEST_MATH})
-# 把目标文件与库文件进行链接
-#target_link_libraries(${PROJECT_NAME} ${LIBS})
+# 自动去搜索该目录下的相对于的 dylib/so/dll 文件
+if (WINDOWS)
+#    link_directories("${PROJECT_SOURCE_DIR}/lib/win")
+elseif (LINUX)
+#    link_directories("${PROJECT_SOURCE_DIR}/lib/linux")
+elseif (MACOS)
+    SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib/macos)
+#    set(LINK_DIR ${PROJECT_SOURCE_DIR}/lib/macos)
+#    file(GLOB LIBS "${LINK_DIR}/*.dylib")
+endif ()
+
+
+message(">>>>>>>>>>>>>> LINK_DIR : ${LINK_DIR}")
+message(">>>>>>>>>>>>>> LIBS : ${LIBS}")
+
+set(target_name asm_cpp)
+## 生成可执行文件
+ADD_EXECUTABLE(bin_${target_name} ${TEST_MATH})
+## 把目标文件与库文件进行链接
+#target_link_libraries(${target_name} ${LIBS})
 
 # 生成静态库
-#ADD_LIBRARY(_asm_cpp STATIC ${TEST_MATH}) 
+#ADD_LIBRARY(${target_name} STATIC ${TEST_MATH}) 
 # 生成动态库或共享库
-#ADD_LIBRARY(_asm_cpp SHARED ${TEST_MATH}) 
+ADD_LIBRARY(${target_name} SHARED ${TEST_MATH}) 
 
 
 ## add_library 默认生成是静态库，通过以上命令生成文件名字，
