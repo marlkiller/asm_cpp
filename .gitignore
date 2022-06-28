@@ -8,3 +8,4 @@ Makefile
 CMakeFiles/
 build/
 .vs/
+lib/*
