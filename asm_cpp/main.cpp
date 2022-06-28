@@ -250,6 +250,10 @@ void lib_test() {
 #elif defined _UNIX
     cout<<"It is in UNIX OS!"<<endl;
 #elif defined __WINDOWS_
+    #if defined(_M_X64) 
+    #else
+    #endif
+    
     cout<<"It is in Windows OS!"<<endl;
     os = "windows";
     file_end_fix = "dll";
