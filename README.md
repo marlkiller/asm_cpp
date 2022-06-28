@@ -17,6 +17,8 @@ yum install -y gcc-c++
 ## Settings
 ### Windows
     cmake -G "Visual Studio 16 2019"
+    cmake 命令构建时,Windows路径为 build\Release ,所以vscode 也要设置
+    项目调试属性 > 配置属性 > 常规 > 输出目录 > {project_name}\build\Release 
     Windows 下依赖 Visual Studio, 用 VS 启动项目时,要自己配置下 cmake, 因为vs集成的cmake版本有点低
     Visual Studio (Configuring the cmake environment)   
 
