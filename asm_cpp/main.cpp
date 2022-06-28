@@ -254,9 +254,6 @@ void lib_test() {
     os = "windows";
     file_end_fix = "dll";
 #endif
-    
-
-
     snprintf(targetString,
              sizeof(targetString),
              file_fmt.c_str(),
