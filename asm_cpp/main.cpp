@@ -11,6 +11,8 @@
 #include "include_demo.h"
 
 #if defined _WIN32
+
+    
     #if defined(_M_X64) 
     extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2, uintptr_t u3);
     extern "C" uintptr_t asm_win64_call(uintptr_t u1);
@@ -22,6 +24,7 @@
 typedef int (*TP_CALL2)(int u1, int u2);
 
 typedef int (*TP_CALL1)(int u1);
+//typedef void (*TP_CALL1)();
 
 using namespace std;
 
@@ -240,6 +243,7 @@ void lib_test() {
     // 格式化，并获取最终需要的字符串
     string os;
     string file_end_fix;
+    int result = 0;
 
 #ifdef __APPLE__
     cout << "It is in Mac OS!" << endl;
@@ -251,27 +255,40 @@ void lib_test() {
     file_end_fix = "so";
 #elif defined _UNIX
     cout<<"It is in UNIX OS!"<<endl;
-#elif defined __WINDOWS_
+#elif defined _WIN32
     #if defined(_M_X64) 
     #else
     #endif
-    
+    file_fmt = "../../lib/%s/shared_lib_asm_cpp.%s";
     cout<<"It is in Windows OS!"<<endl;
-    os = "windows";
+    os = "windows/Release";
     file_end_fix = "dll";
 #endif
+
     snprintf(targetString,
-             sizeof(targetString),
-             file_fmt.c_str(),
-             os.c_str(),
-             file_end_fix.c_str());
+        sizeof(targetString),
+        file_fmt.c_str(),
+        os.c_str(),
+        file_end_fix.c_str());
     //动态库路径
     printf("target lib full_path is {%s} \r\n", targetString);
-    void *handle = dlopen(targetString, RTLD_NOW);
+
+#if defined _WIN32
+
+    HMODULE handle = LoadLibraryA(targetString);
+    auto tp_call1 = (TP_CALL1)GetProcAddress(handle, "lib_dev");
+    result = tp_call1(1);
+    FreeLibrary(handle);
+#else
+    
+    void* handle = dlopen(targetString, RTLD_NOW);
     if (!handle)
         return;
-    auto tp_call1 = (TP_CALL1) dlsym(handle, "lib_dev");
-    int result = tp_call1(1);
+    auto tp_call1 = (TP_CALL1)dlsym(handle, "lib_dev");
+    result = tp_call1(1);
+    dlclose(handle);
+#endif
+    
     printf("result tp_call1(1) = {%d}\r\n", result);
 }
 
