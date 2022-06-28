@@ -239,17 +239,23 @@ void lib_test() {
     string os;
     string file_end_fix;
 
-#if __APPLE__
+#ifdef __APPLE__
+    cout << "It is in Mac OS!" << endl;
     os = "macos";
     file_end_fix = "dylib";
-#elif _WIN32
-    os = "windows";
-    file_end_fix = "dll";
-#elif __LINUX__
+#elif defined linux
+    cout<<"It is in Linux OS!"<<endl;
     os = "linux";
     file_end_fix = "so";
-#else
+#elif defined _UNIX
+    cout<<"It is in UNIX OS!"<<endl;
+#elif defined __WINDOWS_
+    cout<<"It is in Windows OS!"<<endl;
+    os = "windows";
+    file_end_fix = "dll";
 #endif
+    
+
 
     snprintf(targetString,
              sizeof(targetString),
