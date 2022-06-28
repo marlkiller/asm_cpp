@@ -8,26 +8,27 @@
 #include <iostream>
 #include "main.h"
 #include "httplib.h"
+#include "../lib_dev/header/my_lib.h"
+
 #include "include_demo.h"
 
 #if defined _WIN32
 
-    
-    #if defined(_M_X64) 
-    extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2, uintptr_t u3);
-    extern "C" uintptr_t asm_win64_call(uintptr_t u1);
-    #endif
-#else
-    #include <dlfcn.h>
-#endif
 
-typedef int (*TP_CALL2)(int u1, int u2);
+#if defined(_M_X64) 
+extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2, uintptr_t u3);
+extern "C" uintptr_t asm_win64_call(uintptr_t u1);
+#endif
+#else
+
+#include <dlfcn.h>
+
+#endif
 
 typedef int (*TP_CALL1)(int u1);
 //typedef void (*TP_CALL1)();
 
 using namespace std;
-
 
 
 int lib_dev(int a) {
@@ -163,35 +164,35 @@ void asm_test() {
     // https://github.com/akhzarna/AssemblyLanguage
     // uint64_t 位操作 rax,rbx.. 指令为 movq,callq
     // uint32_t 位操作 eax,ebx.. 指令为 movl,calll
-    
+
     std::cout << "this is x86 cpu" << std::endl;
-    
-    
+
+
     __asm__ __volatile__ (
-                          "mov $0x1111111,%%rax\n\t"
-                          "mov $0x1111111,%%rax\n\t"
-                          "mov $0x1111111,%%rax\n\t"
-                          "mov $0x1111111,%%rax\n\t"
-                          :::"cc","memory"
-                          );
-    
+            "mov $0x1111111,%%rax\n\t"
+            "mov $0x1111111,%%rax\n\t"
+            "mov $0x1111111,%%rax\n\t"
+            "mov $0x1111111,%%rax\n\t"
+            :: :"cc", "memory"
+            );
+
     __asm__ __volatile__(
-                         "add %[value_a],%[value_b]\n\t"
-                         "movq %[value_b], %[result_ra]\n\t"
-                         "movq $0x20, %[result_rc]\n\t"
-                         
-                         :[result_ra]"=a"(result_ra),[result_rc]"=c"(result_rc) // result_ra 赋值给 rax,result_rc 赋值给 rcx
-                         :[value_a] "a"(a),[value_b] "b"(b) // value_a 赋值给 rax , value_b 赋值给 rbx
-                         :"cc","memory"
-                         );
-    
+            "add %[value_a],%[value_b]\n\t"
+            "movq %[value_b], %[result_ra]\n\t"
+            "movq $0x20, %[result_rc]\n\t"
+
+            :[result_ra]"=a"(result_ra),[result_rc]"=c"(result_rc) // result_ra 赋值给 rax,result_rc 赋值给 rcx
+    :[value_a] "a"(a),[value_b] "b"(b) // value_a 赋值给 rax , value_b 赋值给 rbx
+    :"cc", "memory"
+    );
+
     __asm__ __volatile__ (
-                          "callq *%[fun_dev_addr]\n\t" // 在内联汇编语句中使用寄存器 eax 时，寄存器名前应该加两个 ‘%’，即 %%eax
-                          :
-                          :[fun_dev_addr]"a"(fun_dev) // mov fun_dev_addr,rax; call rax; // :"%eax"
-                          :"cc","memory"
-                          );
-    
+            "callq *%[fun_dev_addr]\n\t" // 在内联汇编语句中使用寄存器 eax 时，寄存器名前应该加两个 ‘%’，即 %%eax
+            :
+            :[fun_dev_addr]"a"(fun_dev) // mov fun_dev_addr,rax; call rax; // :"%eax"
+    :"cc", "memory"
+    );
+
     //    uint32_t rax,rbx,rcx, rdx; // uint64_t
     //      asm __volatile__ (
     //        "rdtsc" "\n\t"
@@ -238,7 +239,9 @@ void asm_test() {
 
 void lib_test() {
 
-    string file_fmt("../lib/%s/shared_lib_asm_cpp.%s");
+    lib_dev_fun(2);
+
+    string file_fmt("lib/%s/shared_lib_sub_project.%s");
     char targetString[1024];
     // 格式化，并获取最终需要的字符串
     string os;
@@ -256,35 +259,35 @@ void lib_test() {
 #elif defined _UNIX
     cout<<"It is in UNIX OS!"<<endl;
 #elif defined _WIN32
-    #if defined(_M_X64) 
-    #else
-    #endif
-    file_fmt = "../../lib/%s/shared_lib_asm_cpp.%s";
+#if defined(_M_X64) 
+#else
+#endif
+    file_fmt = "../lib/%s/shared_lib_sub_project.%s";
     cout<<"It is in Windows OS!"<<endl;
     os = "windows/Release";
     file_end_fix = "dll";
 #endif
 
     snprintf(targetString,
-        sizeof(targetString),
-        file_fmt.c_str(),
-        os.c_str(),
-        file_end_fix.c_str());
+             sizeof(targetString),
+             file_fmt.c_str(),
+             os.c_str(),
+             file_end_fix.c_str());
     //动态库路径
     printf("target lib full_path is {%s} \r\n", targetString);
 
 #if defined _WIN32
 
     HMODULE handle = LoadLibraryA(targetString);
-    auto tp_call1 = (TP_CALL1)GetProcAddress(handle, "lib_dev");
+    auto tp_call1 = (TP_CALL1)GetProcAddress(handle, "lib_dev_fun");
     result = tp_call1(1);
     FreeLibrary(handle);
 #else
-    
-    void* handle = dlopen(targetString, RTLD_NOW);
+
+    void *handle = dlopen(targetString, RTLD_NOW);
     if (!handle)
         return;
-    auto tp_call1 = (TP_CALL1)dlsym(handle, "lib_dev");
+    auto tp_call1 = (TP_CALL1) dlsym(handle, "lib_dev_fun");
     result = tp_call1(1);
     dlclose(handle);
 #endif
@@ -296,6 +299,7 @@ int main(int argc, const char *argv[]) {
 
     include_test();
     lib_test();
+
     // http_test();
     asm_test();
     return 0;
