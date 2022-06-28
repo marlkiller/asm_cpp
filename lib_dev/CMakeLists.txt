@@ -14,7 +14,8 @@ set(CMAKE_STATIC_LIBRARY_PREFIX "static_lib_")
 
 # 自动去搜索该目录下的相对于的 dylib/so/dll 文件
 if (WINDOWS)
-    SET(LIBRARY_OUTPUT_PATH ../lib/windows)
+    # SET(LIBRARY_OUTPUT_PATH ../lib/windows)
+    SET(LIBRARY_OUTPUT_PATH ${PROJECT_ROOT_PATH}/build)
 elseif (LINUX)
     SET(LIBRARY_OUTPUT_PATH ../lib/linux)
     # link_directories("${PROJECT_ROOT_PATH}/lib/linux")

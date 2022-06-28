@@ -6,7 +6,10 @@ project(asm_cpp)
 # #设置 c++ 版本
 set(CMAKE_CXX_STANDARD 14)
 SET(PROJECT_ROOT_PATH "${PROJECT_SOURCE_DIR}")
+SET(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/build")
+message(">>>>>>>>>>>>>> CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 message(">>>>>>>>>>>>>> PROJECT_ROOT_PATH ${PROJECT_ROOT_PATH}")
+message(">>>>>>>>>>>>>> CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}")
 # 头文件目录
 INCLUDE_DIRECTORIES(include)
 # 源文件目录
@@ -80,3 +83,12 @@ target_link_libraries(${bin_target_name}
         lib_dev
         )
 
+if(WINDOWS)
+    
+    set(copySource ${PROJECT_ROOT_PATH}/build/Release/shared_lib_sub_project.dll)
+    set(copyDest ${PROJECT_ROOT_PATH}/build/lib/windows/Release/shared_lib_sub_project.dll)
+    ADD_CUSTOM_COMMAND( TARGET ${bin_target_name}
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy ${copySource} ${copyDest}
+            )
+endif()

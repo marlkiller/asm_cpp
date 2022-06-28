@@ -259,9 +259,6 @@ void lib_test() {
 #elif defined _UNIX
     cout<<"It is in UNIX OS!"<<endl;
 #elif defined _WIN32
-#if defined(_M_X64) 
-#else
-#endif
     file_fmt = "../lib/%s/shared_lib_sub_project.%s";
     cout<<"It is in Windows OS!"<<endl;
     os = "windows/Release";

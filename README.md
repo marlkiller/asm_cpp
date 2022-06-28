@@ -16,12 +16,13 @@ yum install -y gcc-c++
 
 ## Settings
 ### Windows
-
+    cmake -G "Visual Studio 16 2019"
     Windows 下依赖 Visual Studio, 用 VS 启动项目时,要自己配置下 cmake, 因为vs集成的cmake版本有点低
     Visual Studio (Configuring the cmake environment)   
 
 ### MacOS
-
+    
+    cmake -G Xcode
     Mac 用 Xcode 开发的话, Release 模式要设置下Optimization Level ,否则手写 asm, 编译器开启自动优化会有意想不到的异常发生. (大神忽略)
     Debug 模式下 是默认关闭 自动优化的, 所以Debug模式可以忽略
     Xcode (Build Settings > Optimization Level > Release > None[-O0])
