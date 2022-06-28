@@ -87,6 +87,7 @@ set(target_name asm_cpp)
 ADD_EXECUTABLE(bin_${target_name} ${TEST_MATH})
 ## 把目标文件与库文件进行链接
 #target_link_libraries(${target_name} ${LIBS})
+target_link_libraries(bin_${target_name} ${CMAKE_DL_LIBS})
 
 # 生成静态库
 #ADD_LIBRARY(${target_name} STATIC ${TEST_MATH}) 
