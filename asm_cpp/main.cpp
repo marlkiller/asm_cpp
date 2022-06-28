@@ -12,6 +12,7 @@
 #include "include_demo.h"
 
 typedef int (*TP_CALL2)(int u1, int u2);
+
 typedef int (*TP_CALL1)(int u1);
 
 using namespace std;
@@ -231,8 +232,33 @@ void asm_test() {
 }
 
 void lib_test() {
+
+    string file_fmt("../lib/%s/shared_lib_asm_cpp.%s");
+    char targetString[1024];
+    // 格式化，并获取最终需要的字符串
+    string os;
+    string file_end_fix;
+
+#if __APPLE__
+    os = "macos";
+    file_end_fix = "dylib";
+#elif _WIN32
+    os = "windows";
+    file_end_fix = "dll";
+#elif __LINUX__
+    os = "linux";
+    file_end_fix = "so";
+#else
+#endif
+
+    snprintf(targetString,
+             sizeof(targetString),
+             file_fmt.c_str(),
+             os.c_str(),
+             file_end_fix.c_str());
     //动态库路径
-    void *handle = dlopen("../lib/macos/shared_lib_asm_cpp.dylib", RTLD_NOW);
+    printf("target lib full_path is {%s} \r\n", targetString);
+    void *handle = dlopen(targetString, RTLD_NOW);
     if (!handle)
         return;
     auto tp_call1 = (TP_CALL1) dlsym(handle, "lib_dev");
