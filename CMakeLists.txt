@@ -58,7 +58,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Windows")
     endif ()
 endif ()
 
-message(STATUS ">>>>>>>>>>>>>> Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
+message(">>>>>>>>>>>>>> Current OS is ${CURRENT_OS}/${CURRENT_ARCH}/${CURRENT_BIT}")
 message(">>>>>>>>>>>>>> TEST_MATH : ${TEST_MATH}")
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "shared_lib_")
@@ -86,6 +86,7 @@ set(target_name asm_cpp)
 ADD_EXECUTABLE(bin_${target_name} ${TEST_MATH})
 ## 把目标文件与库文件进行链接
 #target_link_libraries(${target_name} ${LIBS})
+# 在Linux上，使用动态链接的应用程序需要和库libdl.so一起链接，也就是使用选项-ldl
 target_link_libraries(bin_${target_name} ${CMAKE_DL_LIBS})
 
 # 生成静态库
