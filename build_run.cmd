@@ -4,7 +4,7 @@ rmdir /s /q build
 
 set /p flag="Clean CMakeCache.txt ?  y/n :"
 if "%flag%" == "y" (
-    rmdir /s /q CMakeCache.txt
+    del /s /q CMakeCache.txt
 )
 
 set /p flag="Build x64 ? If type 'N' will build with x86 !  y/n :"

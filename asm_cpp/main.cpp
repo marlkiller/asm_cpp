@@ -42,8 +42,8 @@ void fun_dev() {
 }
 std::string get_current_directory()
 {
-    char buff[250];
-    GetCurrentDir(buff, 250);
+    char buff[1024];
+    GetCurrentDir(buff, 1024);
     string current_working_directory(buff);
     return current_working_directory;
 }
@@ -251,10 +251,11 @@ void lib_test() {
     lib_dev_fun(2);
     string current_dir = get_current_directory();
     std::cout << "Current working directory: " << current_dir << endl;
-    string file_fmt("%s/lib/shared_lib_sub_project.%s");
+    string file_fmt("%s%sshared_lib_sub_project.%s");
     char targetString[1024];
     // 格式化，并获取最终需要的字符串
     string file_end_fix;
+    string lib_path = "/lib/";
     int result = 0;
 
 #ifdef __APPLE__
@@ -268,12 +269,14 @@ void lib_test() {
 #elif defined _WIN32
     cout<<"It is in Windows OS!"<<endl;
     file_end_fix = "dll";
+    lib_path = "\\lib\\";
 #endif
 
     snprintf(targetString,
              sizeof(targetString),
              file_fmt.c_str(),
              current_dir.c_str(),
+             lib_path.c_str(),
              file_end_fix.c_str());
     //动态库路径
     printf("target lib full_path is {%s} \r\n", targetString);
