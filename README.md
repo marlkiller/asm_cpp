@@ -25,6 +25,7 @@ yum install -y gcc-c++
 
 ### MacOS
     
+    sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
     cmake -G Xcode
     Mac 用 Xcode 开发的话, Release 模式要设置下Optimization Level ,否则手写 asm, 编译器开启自动优化会有意想不到的异常发生. (大神忽略)
     Debug 模式下 是默认关闭 自动优化的, 所以Debug模式可以忽略
