@@ -11,6 +11,6 @@ if "%flag%" == "y" (
     cmake -A Win32 -B build . 
     cmake --build ./build --config Release
 )
-cd build/Release
+cd build
 bin_asm_cpp.exe
-cd ../../
+cd ../
