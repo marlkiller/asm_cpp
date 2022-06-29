@@ -9,3 +9,9 @@ CMakeFiles/
 build/
 .vs/
 lib/*
+CMakeScripts/
+asm_cpp.xcodeproj/
+lib_dev/CMakeScripts/
+lib_dev/sub_project.xcodeproj/
+asm_cpp.build/
+lib_dev/asm_cpp.build/

@@ -105,7 +105,7 @@ target_link_libraries(${bin_target_name}
 
 if(WINDOWS)
     
-    set(copySource ${PROJECT_ROOT_PATH}/build/Release/shared_lib_sub_project.dll)
+    set(copySource ${PROJECT_ROOT_PATH}/build/shared_lib_sub_project.dll)
     set(copyDest ${PROJECT_ROOT_PATH}/build/lib/windows/Release/shared_lib_sub_project.dll)
     ADD_CUSTOM_COMMAND( TARGET ${bin_target_name}
             POST_BUILD
