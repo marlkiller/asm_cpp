@@ -17,3 +17,5 @@ CMakeScripts/
 *.sln
 *.proj*
 *.recipe
+*.xcodeproj
+*.build
