@@ -9,21 +9,22 @@ SET(SUB_TEST_MATH ${SUB_DIR_SRC})
 message(">>>>>>>>>>>>>> SUB_TEST_MATH : ${SUB_TEST_MATH}")
 
 
-set(CMAKE_SHARED_LIBRARY_PREFIX "shared_lib_")
-set(CMAKE_STATIC_LIBRARY_PREFIX "static_lib_")
+# CACHE INTERNAL 共享变量
+#set(CMAKE_SHARED_LIBRARY_PREFIX ${SHARED_LIB_PREFIX})
+#set(CMAKE_STATIC_LIBRARY_PREFIX ${STATIC_LIB_PREFIX})
 
 # 自动去搜索该目录下的相对于的 dylib/so/dll 文件
-if (WINDOWS)
-    # SET(LIBRARY_OUTPUT_PATH ../lib/windows)
-    # Windows 需要配置 dll 与 exe 在同一路径输出
-    SET(LIBRARY_OUTPUT_PATH ${PROJECT_ROOT_PATH}/build)
-elseif (LINUX)
-    SET(LIBRARY_OUTPUT_PATH ../lib/linux)
-    # link_directories("${PROJECT_ROOT_PATH}/lib/linux")
-elseif (MACOS)
-    SET(LIBRARY_OUTPUT_PATH ../lib/macos)
-endif ()
+#if (WINDOWS)
+#    SET(LIBRARY_OUTPUT_PATH ../lib/windows)
+#elseif (LINUX)
+#    SET(LIBRARY_OUTPUT_PATH ../lib/linux)
+#    # link_directories("${PROJECT_ROOT_PATH}/lib/linux")
+#elseif (MACOS)
+#    SET(LIBRARY_OUTPUT_PATH ../lib/macos)
+#endif ()
 
+# Windows 需要配置 dll 与 exe 在同一路径输出
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_ROOT_PATH}/build)
 
 add_library(${PROJECT_NAME} SHARED ${SUB_TEST_MATH})
 add_library(lib_dev ALIAS ${PROJECT_NAME})

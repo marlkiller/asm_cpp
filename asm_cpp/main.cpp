@@ -251,26 +251,22 @@ void lib_test() {
     lib_dev_fun(2);
     string current_dir = get_current_directory();
     std::cout << "Current working directory: " << current_dir << endl;
-    string file_fmt("%s/lib/%s/shared_lib_sub_project.%s");
+    string file_fmt("%s/lib/shared_lib_sub_project.%s");
     char targetString[1024];
     // 格式化，并获取最终需要的字符串
-    string os;
     string file_end_fix;
     int result = 0;
 
 #ifdef __APPLE__
     cout << "It is in Mac OS!" << endl;
-    os = "macos";
     file_end_fix = "dylib";
 #elif defined linux
     cout<<"It is in Linux OS!"<<endl;
-    os = "linux";
     file_end_fix = "so";
 #elif defined _UNIX
     cout<<"It is in UNIX OS!"<<endl;
 #elif defined _WIN32
     cout<<"It is in Windows OS!"<<endl;
-    os = "windows";
     file_end_fix = "dll";
 #endif
 
@@ -278,7 +274,6 @@ void lib_test() {
              sizeof(targetString),
              file_fmt.c_str(),
              current_dir.c_str(),
-             os.c_str(),
              file_end_fix.c_str());
     //动态库路径
     printf("target lib full_path is {%s} \r\n", targetString);
