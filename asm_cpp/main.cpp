@@ -4,25 +4,27 @@
 //
 //  Created by artemis on 2022/5/9.
 //
-
 #include <iostream>
 #include "main.h"
 #include "httplib.h"
 #include "../lib_dev/header/my_lib.h"
-
 #include "include_demo.h"
 
 #if defined _WIN32
-
-
-#if defined(_M_X64) 
-extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2, uintptr_t u3);
-extern "C" uintptr_t asm_win64_call(uintptr_t u1);
-#endif
+    #if defined(_M_X64) 
+        extern "C" uintptr_t asm_win64_add(uintptr_t u1, uintptr_t u2, uintptr_t u3);
+        extern "C" uintptr_t asm_win64_call(uintptr_t u1);
+    #endif
 #else
+    #include <dlfcn.h>
+#endif
 
-#include <dlfcn.h>
-
+#if defined(_MSC_VER)
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #define GetCurrentDir getcwd
 #endif
 
 typedef int (*TP_CALL1)(int u1);
@@ -37,6 +39,13 @@ int lib_dev(int a) {
 
 void fun_dev() {
     printf("this is fun_dev\r\n");
+}
+std::string get_current_directory()
+{
+    char buff[250];
+    GetCurrentDir(buff, 250);
+    string current_working_directory(buff);
+    return current_working_directory;
 }
 
 int arm_asm_add(int a, int b) {
@@ -240,8 +249,9 @@ void asm_test() {
 void lib_test() {
 
     lib_dev_fun(2);
-
-    string file_fmt("lib/%s/shared_lib_sub_project.%s");
+    string current_dir = get_current_directory();
+    std::cout << "Current working directory: " << current_dir << endl;
+    string file_fmt("%s/lib/%s/shared_lib_sub_project.%s");
     char targetString[1024];
     // 格式化，并获取最终需要的字符串
     string os;
@@ -267,6 +277,7 @@ void lib_test() {
     snprintf(targetString,
              sizeof(targetString),
              file_fmt.c_str(),
+             current_dir.c_str(),
              os.c_str(),
              file_end_fix.c_str());
     //动态库路径
