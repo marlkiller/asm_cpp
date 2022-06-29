@@ -9,6 +9,7 @@
 
 ```shell
 # cmake (VERSION >=3.22)
+# export PATH=$PATH:/home/cloudshell-user/cmake-3.24.0-rc1-linux-x86_64/bin
 yum install -y cmake
 # gcc/g++
 yum install -y gcc-c++
