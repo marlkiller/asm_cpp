@@ -55,3 +55,11 @@ target_include_directories(${PROJECT_NAME}
 #bin_asm_cpp.exe
 #shared_lib_sub_project.lib
 #shared_lib_sub_project.dll
+
+# import SHARED
+#link_directories(${PROJECT_SOURCE_DIR}/lib) #添加动态连接库的路径
+#target_link_libraries(project_name -lmxnet ) #添加libmxnet.so
+# import STATIC
+#add_library(libdev STATIC IMPORTED)
+#set_property(TARGET libdev PROPERTY IMPORTED_LOCATION /path/to/libmxnet.a)
+#target_link_libraries(project_name libdev ) #添加libmxnet.a
