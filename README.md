@@ -16,6 +16,8 @@ yum install -y gcc-c++
 
 ## Settings
 ### Windows
+    安装 cmake/mingw/VS(cmake,windows sdk)
+    mingw 离线包: wget https://github.com/niXman/mingw-builds-binaries/releases/download/13.2.0-rt_v11-rev0/x86_64-13.2.0-release-posix-seh-ucrt-rt_v11-rev0.7z
 
     Windows 下依赖 Visual Studio, 用 VS 启动项目时,要自己配置下 cmake, 因为vs集成的cmake版本有点低
     Visual Studio (Configuring the cmake environment)   

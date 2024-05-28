@@ -1,5 +1,5 @@
 @echo off
-
+rem cmake -G "Visual Studio 17 2022"
 rmdir /s /q build
 
 set /p flag="Build x64 ? If type 'N' will build with x86 !  y/n :"
